@@ -72,10 +72,9 @@ export default class {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
-    this.bills = bills
-    $('#arrow-icon1').click((e) => this.handleShowTickets(e, bills.filter(b => b.status === 'pending'), 1))
-    $('#arrow-icon2').click((e) => this.handleShowTickets(e, bills.filter(b => b.status === 'accepted'), 2))
-    $('#arrow-icon3').click((e) => this.handleShowTickets(e, bills.filter(b => b.status === 'refused'), 3))
+    $('#arrow-icon1').click((e) => this.handleShowTickets(e, bills, 1))
+    $('#arrow-icon2').click((e) => this.handleShowTickets(e, bills, 2))
+    $('#arrow-icon3').click((e) => this.handleShowTickets(e, bills, 3))
     new Logout({ localStorage, onNavigate })
   }
 
@@ -86,18 +85,11 @@ export default class {
     if (typeof $('#modaleFileAdmin1').modal === 'function') $('#modaleFileAdmin1').modal('show')
   }
 
-  /**
-   * Update tickets background color of every bills
-   * Change selected ticket background color
-   * Show selected ticket information on the right container
-   * @param {*} e 
-   * @param {*} bill 
-   */
-  handleEditTicket(e, bill) {
+  handleEditTicket(e, bill, bills) {
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
     if (this.counter % 2 === 0) {
-      this.bills.forEach(b => {
+      bills.forEach(b => {
         $(`#open-bill${b.id}`).css({ background: '#0D5AE5' })
       })
       $(`#open-bill${bill.id}`).css({ background: '#2A2B35' })
@@ -138,13 +130,6 @@ export default class {
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
 
-  /**
-   * Open the tickets list and add an event onClick on each tickets in the list
-   * @param {*} e 
-   * @param {*} bills 
-   * @param {*} index 
-   * @returns 
-   */
   handleShowTickets(e, bills, index) {
     if (this.counter === undefined || this.index !== index) this.counter = 0
     if (this.index === undefined || this.index !== index) this.index = index
@@ -161,7 +146,7 @@ export default class {
     }
 
     bills.forEach(bill => {
-      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill))
+      $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
     })
 
     return bills
