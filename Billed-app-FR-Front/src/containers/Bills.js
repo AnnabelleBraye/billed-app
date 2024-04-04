@@ -1,5 +1,5 @@
 import { ROUTES_PATH } from '../constants/routes.js'
-import { formatDate, formatStatus } from "../app/format.js"
+import { formatStatus } from "../app/format.js"
 import Logout from "./Logout.js"
 
 export default class {
@@ -9,7 +9,7 @@ export default class {
     this.store = store
     const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
     if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
-    const iconEye = document.querySelectorAll(`div[data-testid="icon-eye"]`)
+    const iconEye = document.querySelectorAll(`div[data-testid*="eye-"]`)
     if (iconEye) iconEye.forEach(icon => {
       icon.addEventListener('click', () => this.handleClickIconEye(icon))
     })
@@ -23,6 +23,7 @@ export default class {
   handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute("data-bill-url")
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
+    // console.log(`modaleFile`, $('#modaleFile').find(".modal-body").html);
     $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
     $('#modaleFile').modal('show')
   }
@@ -44,10 +45,10 @@ export default class {
               // if for some reason, corrupted data was introduced, we manage here failing formatDate function
               // log the error and return unformatted date in that case
               console.log(e,'for',doc)
-              return {
-                ...doc,
-                status: formatStatus(doc.status)
-              }
+              // return {
+              //   ...doc,
+              //   status: formatStatus(doc.status)
+              // }
             }
           })
           console.log('length', bills.length)

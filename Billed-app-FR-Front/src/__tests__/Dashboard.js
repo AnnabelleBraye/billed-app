@@ -227,7 +227,8 @@ describe('Given I am connected as Admin and I am on Dashboard page and I clicked
       const dashboard = new Dashboard({
         document, onNavigate, store, bills, localStorage: window.localStorage
       })
-
+      
+      
       const handleClickIconEye = jest.fn(dashboard.handleClickIconEye)
       const eye = screen.getByTestId('icon-eye-d')
       eye.addEventListener('click', handleClickIconEye)
@@ -236,6 +237,10 @@ describe('Given I am connected as Admin and I am on Dashboard page and I clicked
 
       const modale = screen.getByTestId('modaleFileAdmin')
       expect(modale).toBeTruthy()
+      
+      // On teste que l'image s'affiche bien et donc que la modale est ouverte
+      const test = screen.getByAltText('Bill');
+      expect(test).toBeTruthy();
     })
   })
 })
