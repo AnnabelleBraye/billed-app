@@ -5,11 +5,8 @@
 import { screen } from "@testing-library/dom"
 import Actions from "../views/Actions.js"
 import { bills } from "../fixtures/bills.js"
-import mockStore from "../__mocks__/store"
 
 import '@testing-library/jest-dom/extend-expect'
-
-jest.mock("../app/store", () => mockStore)
 
 describe('Given I am connected as an Employee', () => {
   describe('When I am on Bills page and there are bills', () => {
