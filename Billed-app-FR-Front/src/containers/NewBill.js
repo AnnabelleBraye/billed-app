@@ -18,9 +18,12 @@ export default class NewBill {
 
   handleChangeFile = e => {
     e.preventDefault()
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    const fileInput = this.document.querySelector(`input[data-testid="file"]`);
+    const fileErrorMessage = this.document.querySelector('p[data-testid="file-error-message"]');
+    const file = fileInput.files[0]
 
-    if (file.type.includes('png') || file.type.includes('jpg') || file.type.includes('jpeg') || file.type.includes('gif')) {
+    if (file.type.includes('png') || file.type.includes('jpg') || file.type.includes('jpeg')) {
+      fileErrorMessage.classList.add('hide');
       const filePath = e.target.value.split(/\\/g)
       const fileName = filePath[filePath.length-1]
       const formData = new FormData()
@@ -41,9 +44,11 @@ export default class NewBill {
         this.billId = key
         this.fileUrl = fileUrl
         this.fileName = fileName
-      }).catch(error => console.error(error))
+      })
+      .catch(error => console.error(error))
     } else {
-      this.document.querySelector(`input[data-testid="file"]`).value = null
+      fileInput.value = ''
+      fileErrorMessage.classList.remove('hide')
     }
   }
 
