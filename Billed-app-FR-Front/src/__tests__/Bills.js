@@ -12,6 +12,7 @@ import {localStorageMock} from "../__mocks__/localStorage.js";
 import mockStore from "../__mocks__/store"
 
 import router from "../app/Router.js";
+import { formatDate } from "../app/format.js"
 
 jest.mock("../app/store", () => mockStore)
 
@@ -27,6 +28,21 @@ describe("Given I am connected as an employee", () => {
     it("Should render error page", () => {
       document.body.innerHTML = BillsUI({error: 'There is an error'})
       expect(screen.getAllByText('Erreur')).toBeTruthy()
+    })
+  })
+
+  describe('When I am on Bills page, there are bills with date', () => {
+    it('Should format date to format "13 Avr. 24', () => {
+      const formatedDate = formatDate("2024-04-13")
+      expect(formatedDate).toBe('13 Avr. 24')
+    })
+  })
+
+  describe('When I am on Bills page, there are bills with date', () => {
+    it('Should not format date to format "13 Avr. 24" when wrong date format', () => {
+      const formatedDate = formatDate("test")
+      expect(formatedDate).not.toBe('13 Avr. 24')
+      expect(formatedDate).toBe('test')
     })
   })
 
@@ -56,6 +72,8 @@ describe("Given I am connected as an employee", () => {
       const sortedDates = [...dates].sort(antiChrono)
       expect(sortedDates).toEqual(dates)
     })
+
+    
 
     describe("When I click on first bill eye-icon", () => {
       it("Should open modal", async () => {
@@ -151,6 +169,9 @@ describe("Given I'm a user connected as Employee", () => {
       window.onNavigate(ROUTES_PATH.Bills)
       await waitFor(() => screen.getByText("Mes notes de frais"))
       expect(screen.getByTestId("eye-47qAXb6fIm2zOKkLzMro")).toBeTruthy()
+      expect(screen.getByTestId("eye-BeKy5Mo4jkmdfPGYpTxZ")).toBeTruthy()
+      expect(screen.getByTestId("eye-UIUZtnPQvnbFnB0ozvJh")).toBeTruthy()
+      expect(screen.getByTestId("eye-qcCK3SzECmaZAGRrHjaC")).toBeTruthy()
     })
 
     describe("When an error occurs on API", () => {
