@@ -94,7 +94,6 @@ describe("Given I am connected as an employee", () => {
 
         const eyeIcon = screen.getByTestId('eye-47qAXb6fIm2zOKkLzMro')
         expect(eyeIcon).toBeTruthy();
-        console.log(`eyeIcon`, eyeIcon);
         
         const handleClickIconEye = jest.fn(() => bill.handleClickIconEye(eyeIcon))
         eyeIcon.addEventListener('click', handleClickIconEye)
@@ -143,6 +142,17 @@ describe("Given I am connected as an employee", () => {
 // test d'intégration GET
 describe("Given I'm a user connected as Employee", () => {
   describe("When I navigate to Bills", () => {
+    test("fetches bills from mock API GET", async () => {
+      localStorage.setItem("user", JSON.stringify({ type: "Employee", email: "a@a" }));
+      const root = document.createElement("div")
+      root.setAttribute("id", "root")
+      document.body.append(root)
+      router()
+      window.onNavigate(ROUTES_PATH.Bills)
+      await waitFor(() => screen.getByText("Mes notes de frais"))
+      expect(screen.getByTestId("eye-47qAXb6fIm2zOKkLzMro")).toBeTruthy()
+    })
+
     describe("When an error occurs on API", () => {
       beforeEach(() => {
         jest.spyOn(mockStore, "bills")
@@ -155,6 +165,8 @@ describe("Given I'm a user connected as Employee", () => {
         document.body.append(root)
         router()
       })
+
+      // TODO test GET list
 
       it("should fetch bills from an API and fails with 404 message error", async () => {
         mockStore.bills.mockImplementationOnce(() => {
