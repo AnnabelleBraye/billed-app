@@ -15,7 +15,7 @@ const row = (bill) => {
       <td>${bill.status}</td>
       <td>${Actions(bill.fileUrl, bill.id)}<td>
       </tr>
-  `)
+      `)
 }
 
 const rows = (data) => {
